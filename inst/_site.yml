@@ -1,0 +1,18 @@
+name: "my-website"
+output_dir: ""
+navbar:
+  title: "My project"
+  left:
+  - text: "Help"
+    href:  help.html
+ 
+  right: 
+  - text: "View on Github"
+    href: https://github.com/something
+output:
+  html_document:
+    css: style.css
+    theme: flatly
+
+    
+

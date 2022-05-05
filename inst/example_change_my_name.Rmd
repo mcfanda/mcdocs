@@ -1,0 +1,38 @@
+---
+title: "A cool help"
+author: "Yourself"
+nickname: acoolhelpexample
+topic: general
+category: help
+output: 
+  html_document:
+     includes:
+         in_header: ganalytics.txt
+     toc: true
+     toc_float:
+        collapsed: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r echo=FALSE,results='hide'}
+library(mcdocs)
+mcdocs_init()
+```
+
+
+```{r echo=FALSE,results='hide'}
+# do something here 
+```
+
+
+`r keywords("acool, example")`
+
+
+In this example we show that `r modulename()` does nothing, but it does it well. 
+
+
+# Related examples
+`r include_examples()`
+
+`r issues()`

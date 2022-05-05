@@ -1,0 +1,12 @@
+Package: mcdocs
+Type: Package
+Title: Help Functions for Docs
+Version: 0.1.0
+Author: marcello gallucci
+Maintainer: Mcfanda <mcfanda@gmail.com>
+Description: some usefull functions to create github docs pages.
+Imports: rlist, yaml, rmarkdown
+License: free
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
