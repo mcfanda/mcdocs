@@ -195,9 +195,11 @@ get_commits<-function() {
 
    folder<-paste0(PROJECT_FOLDER,"/resources")
    if (!dir.exists(folder))
-        dir.create(foder)
+        dir.create(folder)
 
    cfile<-paste0(folder,"/commitsdata.Rda")
+   present_vers<-list()
+   commits<-data.frame()
    test<-file.exists(cfile)
    if (test) {
       load(cfile)
