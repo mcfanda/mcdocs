@@ -153,3 +153,28 @@ backto<-function(topic) {
   return(d)
 
 }
+
+
+get_options<-function(com,optnames) {
+
+  output<-list()
+  file<-paste0(MODULE_FOLDER,"/jamovi/",com,".a.yaml")
+  obj<<-yaml::read_yaml(file)
+  options<-obj$options
+  for (optname in optnames) {
+      res<-rlist::list.find(options,name==optname)
+      output[[length(output)+1]]<-res
+  }
+  output
+}
+
+format_options<-function(com,optnames) {
+
+  opts<-get_options(com,optnames)
+  for (opt in opts) {
+    opt<-opt[[1]]
+    desc<-if (hasName(opt$description,"ui")) opt$description$ui else opt$description
+    cat("* ",opt(opt$title)," ",desc,"\n")
+  }
+
+}
