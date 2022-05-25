@@ -168,13 +168,75 @@ get_options<-function(com,optnames) {
   output
 }
 
+
+
+#' print a list of options and description from yaml file
+#' @param com the command to look for, as in com.a.yaml
+#' @export
+
 format_options<-function(com,optnames) {
 
+  output<-"<table class='options'>"
   opts<-get_options(com,optnames)
   for (opt in opts) {
     opt<-opt[[1]]
-    desc<-if (hasName(opt$description,"ui")) opt$description$ui else opt$description
-    cat("* ",opt(opt$title)," ",desc,"\n")
+    desc<-"No description"
+    if (hasName(opt$description,"R"))
+       desc<-opt$description$R
+    if (hasName(opt$description,"ui"))
+      desc<-opt$description$ui
+    if (!is.list(opt$description))
+       desc<-opt$description
+    output<-paste(output,"<tr>")
+    output<-paste(output,paste("<td> ",opt(opt$title),"</td> <td>",desc,"</td>\n"))
+    output<-paste(output,"</tr>")
+
   }
+  output<-paste(output,"</table>")
+
+  return(output)
+}
+
+#format_options("semljgui",c("showlabels","constraints_examples"))
+
+#' print a list of options within a panel
+#' @param com the command to look for, as in com.a.yaml
+#' @export
+
+panel_options<-function(com,value) {
+  obj<-get_u(com)
+  panel<-find_in_list(obj,"name",value)[[1]]
+  opts<-find_in_list(panel,"type",c("CheckBox","RadioButton","ComboBox"))
+  opts<-unique(unlist(lapply(opts,function(x) if (hasName(x,"optionName")) x$optionName else x$name)))
+  format_options(com,opts)
+}
+
+
+
+find_in_list<-function(obj,what,value) {
+
+  res<-list()
+.recurse<-function(obj) {
+
+  if (hasName(obj,what))
+    if (obj[[what]] %in% value) {
+      res[[length(res)+1]]<<-obj
+   }
+
+ if (hasName(obj,"children"))
+    for (child in obj$children)
+              .recurse(child)
 
 }
+.recurse(obj)
+res
+}
+
+get_u<-function(com) {
+
+  file<-paste0(MODULE_FOLDER,"/jamovi/",com,".u.yaml")
+  obj<<-yaml::read_yaml(file)
+  obj
+}
+
+

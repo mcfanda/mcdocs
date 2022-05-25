@@ -22,9 +22,9 @@ h1 {
 }
 
 .section h1 {
-  padding-top: 155px !important; 
-  margin-top: -155px !important; 
-  
+  padding-top: 155px !important;
+  margin-top: -155px !important;
+
 }
 
 .section h2 {
@@ -55,7 +55,7 @@ span.keywords {
   color: #FFFFFF;
   font-size: 12px;
   font-style: italic;
-  border-radius: 5px; 
+  border-radius: 5px;
   background-color: #3E6DA9;
   margin-bottom: 25px;
 }
@@ -74,7 +74,7 @@ span.version {
   color: #FFFFFF;
   font-size: 12px;
   font-style: italic;
-  border-radius: 5px; 
+  border-radius: 5px;
   background-color: green;
   margin-bottom: 10px;
 }
@@ -93,7 +93,7 @@ span.draft {
   padding: 5px;
   font-size: 12px;
   font-style: italic;
-  border-radius: 5px; 
+  border-radius: 5px;
   color: black;
   background-color: #FCF8E3;
   margin-bottom: 10px;
@@ -104,7 +104,7 @@ span.incomplete {
   padding: 5px;
   font-size: 12px;
   font-style: italic;
-  border-radius: 5px; 
+  border-radius: 5px;
   color: black;
   background-color: #FF0000;
   margin-bottom: 10px;
@@ -141,20 +141,20 @@ span.modulename {
 pre.jamovitable {
   color:black;
   background-color: white;
-  margin-bottom: 35px;  
+  margin-bottom: 35px;
   font-size: 11px;
 }
 figure {
   margin-top: 30px;
   margin-bottom: 30px;
-  
+
 }
 figcaption {
   font-size: 1.2em;
   font-style: italic;
   padding-top: 10px;
-  
-  
+
+
 }
 
 span.option {
@@ -177,4 +177,13 @@ span.option {
 
 code {
   color: black;
+}
+
+.options {
+  border-collapse: separate;
+  border-spacing: 10px;
+  margin-bottom: 20px;
+}
+tr {
+  vertical-align: top;
 }
