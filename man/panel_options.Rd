@@ -4,10 +4,10 @@
 \alias{panel_options}
 \title{print a list of options within a panel}
 \usage{
-panel_options(com, value)
+panel_options(com, value, labels = FALSE, mode = NULL)
 }
 \arguments{
-\item{com}{the command to look for, as in com.a.yaml}
+\item{com}{the name of the panel to look for, as in .u.yaml}
 }
 \description{
 print a list of options within a panel

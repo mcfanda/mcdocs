@@ -4,7 +4,7 @@
 \alias{render_mcdocs}
 \title{render the site}
 \usage{
-render_mcdocs()
+render_mcdocs(output_format = "html_document")
 }
 \description{
 render the site

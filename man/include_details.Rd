@@ -4,7 +4,7 @@
 \alias{include_details}
 \title{print a html list of pages of category details}
 \usage{
-include_details(topic)
+include_details(topic = NULL, mute = FALSE, title = "")
 }
 \arguments{
 \item{topic}{of the file, set in yaml head of the file}

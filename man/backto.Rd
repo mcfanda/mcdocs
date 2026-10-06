@@ -4,7 +4,7 @@
 \alias{backto}
 \title{print a link to some topic}
 \usage{
-backto(topic)
+backto(...)
 }
 \arguments{
 \item{topic}{of the file, set in yaml head of the file}

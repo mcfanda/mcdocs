@@ -4,7 +4,7 @@
 \alias{link_pages}
 \title{print a link to pages}
 \usage{
-link_pages(nickname = NULL, topic = NULL, category = NULL)
+link_pages(nickname = NULL, topic = NULL, category = NULL, path = ".")
 }
 \arguments{
 \item{nickname}{of the file, set in yaml head of the file}
@@ -12,6 +12,8 @@ link_pages(nickname = NULL, topic = NULL, category = NULL)
 \item{topic}{of the file, set in yaml head of the file}
 
 \item{category}{of the file, set in yaml head of the file}
+
+\item{path}{path where to find the file, default "."}
 }
 \description{
 print a link to pages

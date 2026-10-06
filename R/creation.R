@@ -42,32 +42,31 @@ createdocs <- function(folder="./") {
 
 #' render the site
 #' @export
-render_mcdocs<-function() {
+render_mcdocs<-function(output_format="html_document") {
 
-   copy<-FALSE
-
-   if (SOURCE_FOLDER==STORE_FOLDER)
-       stop("Source folder cannot be the same as the store folder")
    here<-getwd()
+   clean<-FALSE
+
+   TARGET_FOLDER<-NULL
+   y<-yaml::read_yaml(paste0(SOURCE_FOLDER,"/_site.yml"))
+   if (hasName(y,"output_dir"))
+      TARGET_FOLDER<-paste0(SOURCE_FOLDER,"/",y$output_dir)
 
    if (!dir.exists(SOURCE_FOLDER))
       stop("Folder ",SOURCE_FOLDER," does not exist. Rendering aborted.")
-   if (!dir.exists(STORE_FOLDER))
-      stop("Folder",SOURCE_FOLDER," does not exist. Rendering aborted.")
 
-   if (!is.null(TARGET_FOLDER)) {
-        if (SOURCE_FOLDER!=TARGET_FOLDER) {
+   if (SOURCE_FOLDER!=TARGET_FOLDER) {
            if (!dir.exists(TARGET_FOLDER))
               stop("Folder",TARGET_FOLDER," does not exist. Rendering aborted.")
            else
-              copy=TRUE
-        }
+              clean=TRUE
    }
-    rmarkdown::render_site(SOURCE_FOLDER,output_format = "html_document")
+    rmarkdown::render_site(SOURCE_FOLDER,output_format = output_format)
 
-    if (copy) {
-       cmd<-paste("cp -R ",paste0(STORE_FOLDER,"/*"),paste0(TARGET_FOLDER,"/"))
-       system(cmd)
+    if (clean) {
+       cmd<-paste("rm ",paste0(SOURCE_FOLDER,"/*.html"))
+#       print(cmd)
+#       system(cmd)
     }
 
 }
@@ -178,15 +177,15 @@ get_github_commits<-function(pulls) {
       for (com in coms) {
          if (length(com)==0)
             next
-         one<-list(sha=com$sha,msg=com$commit$message,version=pull$head$ref)
+         one<-c(sha=com$sha,msg=com$commit$message,version=pull$head$ref)
          commits[[length(commits)+1]]<-one
       }
    }
    commits<-as.data.frame(do.call(rbind,commits))
+   for (n in names(commits))
+       commits[[n]]<-unlist(commits[[n]])
    commits
 }
-
-
 
 
 #' save new commits in old commits file
@@ -210,14 +209,18 @@ get_commits<-function() {
    all_vers<-unlist(rlist::list.select(all_pulls, head$ref ))
    sel<-!(all_vers %in% present_vers)
    pulls<-all_pulls[sel]
-   if (length(pulls)==0) {
-        return(commits)
+   if (length(pulls)>0) {
+      test<-unlist(rlist::list.select(pulls, head$ref ))
+      newcommits<-get_github_commits(pulls)
+      commits<-as.data.frame(rbind(newcommits,commits))
    }
 
-   test<-unlist(rlist::list.select(pulls, head$ref ))
-   newcommits<-get_github_commits(pulls)
-   commits<-rbind(newcommits,commits)
+   commits<-commits[order(commits$version,decreasing = T),]
    save(commits, file=cfile)
+   commits<-commits[grep("Version",commits$version),]
+   commits$nv<-as.numeric(gsub(".","",gsub("Version","",commits$version),fixed=T))
+   first<-as.numeric(gsub(".","",gsub("Version","",FIRST_VERSION),fixed=T))
+   commits<-commits[commits$nv>first,]
    commits
 }
 
@@ -228,6 +231,8 @@ mcdocs_init<-function() {
    rwhere<-"R/"
    if (!dir.exists(rwhere))
       rwhere<-"../R/"
+   if (!dir.exists(rwhere))
+            rwhere<-"../../R/"
    if (!dir.exists(rwhere))
       stop("R/ folder not found")
 
@@ -253,4 +258,25 @@ mcdocs_gh_info<-function() {
         stop("File R/secrets.R not found. Create it to set github `API_TOKEN` ")
 
     source(paste0(rwhere,"secrets.R"))
+}
+
+#' @export
+mcdocs_path<-function(path="") {
+
+   if (is.null(PROJECT_FOLDER))
+       stop("PROJECT_FOLDER not found. Please run mcdocs_init()")
+   return(paste0(PROJECT_FOLDER,"/",path))
+
+}
+
+
+#' @export
+mcdocs_files<-function() {
+
+   if (is.null(PROJECT_FOLDER))
+       stop("PROJECT_FOLDER not found. Please run mcdocs_init()")
+    fpath <- system.file("mcdocs.css", package="mcdocs")
+    cmd<-paste("cp ",fpath,paste0(PROJECT_FOLDER,"/docssource/"))
+    system(cmd)
+
 }
